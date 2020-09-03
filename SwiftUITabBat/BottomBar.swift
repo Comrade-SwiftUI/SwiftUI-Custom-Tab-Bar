@@ -18,21 +18,14 @@ public struct BottomBar : View {
         self.items = items
     }
     
-    func itemView(at index: Int) -> some View {
-        Button(action: {
-            withAnimation { self.selectedIndex = index }
-        }) {
-            BottomBarItemView(isSelected: index == selectedIndex, item: items[index])
-        }
-    }
-    
     public var body: some View {
         HStack(alignment: .bottom) {
-            ForEach(0..<items.count) { index in
-                self.itemView(at: index)
-                
-                if index != self.items.count-1 {
-                    Spacer()
+            ForEach(items.indices, id: \.self) { index in
+                Button(action: {
+                    withAnimation { self.selectedIndex = index }
+                }) {
+                    BottomBarItemView(isSelected: index == self.selectedIndex, item: self.items[index])
+                        .padding(.trailing)
                 }
             }
         }
